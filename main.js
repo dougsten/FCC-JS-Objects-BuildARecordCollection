@@ -34,20 +34,47 @@ function updateRecords (records, id, prop, value) {
       self.prop = self.value;
     }
   }
-
+  
+// 2. If <value> is an empty string, delete the given <prop> property from the album.
+  for (let i= 0; i < recordCollection.length; i++) {
+    if (recordCollection[i] === id && recordCollection[i].value === "") {
+      delete recordCollection[i].prop;
+    }
+  }
+// 3. If <prop> isn't <["tracks"]> and <value> isn't an empty string, assign the <value> to that album's <prop>.
+// if (prop != "tracks" && value != "") {prop = value}
+  for (let i = 0; i < records.length; i++) {
+    if (records[i] === id && records[i].value != "" && records[i].prop != "tracks") {
+      self.prop = self.value;
+    }
   }
 
+// 4. If <prop> is <["tracks"]> and <value> isn't an empty string, but the album doesn't have a <["tracks"]> property, create an empty array and add <value> to it.
+// if (prop === "["tracks"]" && value != ""; if (tracks === "-1") {add tracks: to properties and add []}
+  for (let i = 0; i < records.length; i++) {
+    if (records[i] === id && records[i].value != "" && records[i].prop === "tracks" && records[i].tracks === undefined) {
+      records[i].tracks = [];
+      records[i].tracks.push(value);
+    }
+  }
 
-  // 1. Your function must always return the entire <records> object.
+// 5. If prop is <["tracks"]> and <value> isn't an empty string, add <value> to the end of the album's existing <["tracks"]> array.
+// if (prop === "tracks" && value != "") {add <value> to end of album <tracks>}
+  for (let i = 0; i < records.length; i++) {
+    if (records[i] === id && records[i].value != "" && records[i].prop === "tracks" && records[i].tracks != undefined) {
+      records[i].tracks.push(value);
+    }
+  }
+
+// 1. Your function must always return the entire <records> object.
   return records;
 };
 
-// 2. If <value> is an empty string, delete the given <prop> property from the album.
-
-// 3. If <prop> isn't <tracks> and <value> isn't an empty string, assign the <value> to that album's prop.
-
-// 4. If <prop> is <tracks> and <value> isn't an empty string, but the album doesn't have a <tracks> property, create an empty array and add <value> to it.
-
-// 5. If prop is <tracks> and <value> isn't an empty string, add <value> to the end of the album's existing <tracks> array.
-
 // Note: A copy of the recordCollection object is used for the tests. Your function should not directly refer to the recordCollection object, only the function parameter.
+updateRecords(recordCollection, 5439, 'artist', 'ABBA');
+updateRecords(recordCollection, 5439, 'tracks', 'Take a Chance on Me');
+// updateRecords(recordCollection, 2548, 'artist', '');
+// updateRecords(recordCollection, 1245, 'tracks', 'Addicted to Love');
+// updateRecords(recordCollection, 2468, 'tracks', 'Free');
+// updateRecords(recordCollection, 2548, 'tracks', '');
+console.log(recordCollection); 
